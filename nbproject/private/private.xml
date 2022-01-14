@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletConfirmacionCompra.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletAgregarCarroAcampada.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/web/categorias.jsp</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletAgregarCarroRopa.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletEliminarProducto.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Dao/Db.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletCategoria.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletAgregarCarroComplementos.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/web/resumenCompra.jsp</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Modelo/Producto.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletAgregarCarroInsignias.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/web/index.html</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletModificarCantidad.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/web/indexRopa.jsp</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Servlets/ServletAgregarCarroLibros.java</file>
+            <file>file:/D:/2DAW/DWES/Proyecto%20Servidores/tiendaScout/src/java/Modelo/Pedido.java</file>
+        </group>
+    </open-files>
+</project-private>

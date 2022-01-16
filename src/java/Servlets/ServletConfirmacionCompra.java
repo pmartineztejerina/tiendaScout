@@ -7,7 +7,9 @@ package Servlets;
 import Modelo.Producto;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,30 +27,32 @@ public class ServletConfirmacionCompra extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        ServletContext contexto = getServletContext();
-        RequestDispatcher rd;
+        
         HttpSession sesion = request.getSession();
 
         String nombreUsuario = (String) sesion.getAttribute("nombreUsuario");
+        
+        int usuario_id=Dao.Db.consultaIdUsuario(nombreUsuario);
+        
         if (sesion.getAttribute("nombreUsuario") == null) {
             //lo envio al index
             response.sendRedirect("index.html");
         }
         double total= (double) sesion.getAttribute("total");
         
-        ArrayList<Producto> listaRopa;
-        listaRopa = (ArrayList<Producto>) sesion.getAttribute("listaRopa");
-        ArrayList<Producto> listaInsignias;
-        listaInsignias = (ArrayList<Producto>) sesion.getAttribute("listaInsignias");
-        ArrayList<Producto> listaComplementos;
-        listaComplementos = (ArrayList<Producto>) sesion.getAttribute("listaComplementos");
-        ArrayList<Producto> listaAcampada;
-        listaAcampada = (ArrayList<Producto>) sesion.getAttribute("listaAcampada");
-        ArrayList<Producto> listaLibros;
-        listaLibros = (ArrayList<Producto>) sesion.getAttribute("listaLibros");
-
-          
+        ArrayList<Producto> listaCompra;
+        listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
+                     
+        Dao.Db.altaPedido(usuario_id, total);
+        
+        int pedido_id=Dao.Db.numeroPedido();
+        
+        for (Producto producto : listaCompra) {
+            Dao.Db.altaDetallePedido(producto,pedido_id);
+        }
+        
+        sesion.invalidate();
+        response.sendRedirect("index.html");
     }
 
 }

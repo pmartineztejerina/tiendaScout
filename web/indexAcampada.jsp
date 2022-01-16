@@ -22,54 +22,64 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="assets/css/styles.css" rel="stylesheet" />
     </head>
-     <%
-            HttpSession sesion=request.getSession();
-            String nombreUsuario=(String) sesion.getAttribute("nombreUsuario");
-            if (sesion.getAttribute("nombreUsuario")==null) {
-                   //lo envio al index
-                   response.sendRedirect("index.html");
-                } 
-            ArrayList<Producto> listaRopa;
-            listaRopa = (ArrayList<Producto>) sesion.getAttribute("listaRopa");
-            ArrayList<Producto> listaInsignias;
-            listaInsignias = (ArrayList<Producto>) sesion.getAttribute("listaInsignias");
-            ArrayList<Producto> listaComplementos;
-            listaComplementos = (ArrayList<Producto>) sesion.getAttribute("listaComplementos");
-            ArrayList<Producto> listaAcampada;
-            listaAcampada = (ArrayList<Producto>) sesion.getAttribute("listaAcampada");
-            ArrayList<Producto> listaLibros;
-            listaLibros = (ArrayList<Producto>) sesion.getAttribute("listaLibros");
-            
-            //comprobar si las listas tienen articulos
-            int productosCarro=0;
-            if (listaRopa!=null) {
-                productosCarro+=listaRopa.size();
-            } 
-            if (listaInsignias!=null) {
-                productosCarro+=listaInsignias.size();
-            }
-            if (listaComplementos!=null) {
-                productosCarro+=listaComplementos.size();
-            }
-            if (listaAcampada!=null) {
-                productosCarro+=listaAcampada.size();
-            }
-            if (listaLibros!=null) {
-                productosCarro+=listaLibros.size();
-            }
-            %>
+    <%
+        HttpSession sesion = request.getSession();
+        String nombreUsuario = (String) sesion.getAttribute("nombreUsuario");
+        if (sesion.getAttribute("nombreUsuario") == null) {
+            //lo envio al index
+            response.sendRedirect("index.html");
+        }
+        String usuario_tipo=(String) sesion.getAttribute("usuario_tipo"); 
+        ArrayList<Producto> listaCompra;
+        listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
+
+        //comprobar si las listas tienen articulos
+        int productosCarro = 0;
+        if (listaCompra != null) {
+            productosCarro += listaCompra.size();
+        }
+    %>
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand">Tienda Scout</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid">
+                <a class="navbar-brand">Tienda Scout <%=nombreUsuario%></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page"><%=nombreUsuario %></a></li>
-                        <form class="d-flex" action="categorias.jsp" method="POST">
-                            <li class="nav-item"><a class="nav-link active" aria-current="page"><button class="btn btn-outline-dark" type="submit">Categorias</button></a></li>   
-                        </form>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page">Inicio</a>                           
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorias
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a <input class="dropdown-item" type="button" value="Ropa" onclick="location.href = 'indexRopa.jsp'">Ropa</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="Insignias" onclick="location.href = 'indexInsignias.jsp'">Insignias</a></li> 
+                                <li><a <input class="dropdown-item" type="button" value="Complementos" onclick="location.href = 'indexComplementos.jsp'">Complementos</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="Acampada" onclick="location.href = 'indexAcampada.jsp'">Acampada</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="Libros" onclick="location.href = 'indexLibros.jsp'">Libros</a></li>
+                            </ul>
+                        </li>  
+                        <!-- Menu para administrador -->
+                        <% if (usuario_tipo.equals("admin")) {
+                          %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Informacion pedidos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'listadoFechas.jsp'">Filtrado por fechas</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'listadoProducto.jsp'">Filtrado por productos</a></li> 
+                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'listadoCliente.jsp'">Filtrado por cliente</a></li>                           
+                            </ul>
+                        </li>
+                        <%
+                                }
+                        %>
                     </ul>
                     <form class="d-flex" action="resumenCompra.jsp" method="POST">
                         <button class="btn btn-outline-dark" type="submit">
@@ -81,9 +91,10 @@
                 </div>
             </div>
         </nav>
+
         <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
+        <header class="bg-dark py-3">
+            <div class="container px-4 px-lg-5 my-2">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">ACAMPADA</h1>
                 </div>
@@ -113,21 +124,10 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="31">   
                                     <input type="hidden" name="precio_venta" value="6.30">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                             </div>
                         </div>
@@ -149,337 +149,238 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="32"> 
                                     <input type="hidden" name="precio_venta" value="16.00">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                <!-- TERCER PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_33.jpg" alt="Navaja multiusos" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Navaja Multiusos Victorinox</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">30.83 €</span>
-                                27.47 €
+                    <!-- TERCER PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_33.jpg" alt="Navaja multiusos" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Navaja Multiusos Victorinox</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">30.83 €</span>
+                                    27.47 €
+                                </div>
                             </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="33"> 
                                     <input type="hidden" name="precio_venta" value="27.47">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- CUARTO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_34.jpg" alt="Mochila senderismo" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Mochila senderismo 50 litros con funda impermeable</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">79.50 €</span>
-                                75.53 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- CUARTO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_34.jpg" alt="Mochila senderismo" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Mochila senderismo 50 litros con funda impermeable</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">79.50 €</span>
+                                    75.53 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="34"> 
                                     <input type="hidden" name="precio_venta" value="75.53">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- QUINTO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_35.jpg" alt="Saco de dormir" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Saco de dormir 5 grados</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">48.50 €</span>
-                                46.08 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- QUINTO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_35.jpg" alt="Saco de dormir" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Saco de dormir 5 grados</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">48.50 €</span>
+                                    46.08 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="35"> 
                                     <input type="hidden" name="precio_venta" value="46.08">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- SEXTO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_36.jpg" alt="Esterilla aislante" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Esterilla aislante</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">14.80 €</span>
-                                14.06 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- SEXTO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_36.jpg" alt="Esterilla aislante" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Esterilla aislante</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">14.80 €</span>
+                                    14.06 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="36">  
                                     <input type="hidden" name="precio_venta" value="14.06">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- SEPTIMO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_37.jpg" alt="Tienda de campaña" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Tienda de campaña 4 personas</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">68.75 €</span>
-                                65.31 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- SEPTIMO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_37.jpg" alt="Tienda de campaña" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Tienda de campaña 4 personas</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">68.75 €</span>
+                                    65.31 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="37">  
                                     <input type="hidden" name="precio_venta" value="65.31">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- OCTAVO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_38.jpg" alt="Silla plegable" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Silla plegable camping</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">12.99 €</span>
-                                12.34 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- OCTAVO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_38.jpg" alt="Silla plegable" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Silla plegable camping</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">12.99 €</span>
+                                    12.34 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="38">  
                                     <input type="hidden" name="precio_venta" value="12.34">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- NOVENO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_39.jpg" alt="Linterna Led" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Linterna led 30 lúmenes</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">9.99 €</span>
-                                9.49 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- NOVENO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_39.jpg" alt="Linterna Led" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Linterna led 30 lúmenes</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">9.99 €</span>
+                                    9.49 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="39">  
                                     <input type="hidden" name="precio_venta" value="9.49">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- DECIMO PRODUCTO -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="img/foto_40.jpg" alt="Taza esmaltada" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Taza esmaltada</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">14.60 €</span>
-                                13.14 €
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroAcampada" method="POST">
+                    </div>
+                    <!-- DECIMO PRODUCTO -->
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Descuento</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="img/foto_40.jpg" alt="Taza esmaltada" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">Taza esmaltada</h5>
+                                    <!-- Product price-->
+                                    <span class="text-muted text-decoration-line-through">14.60 €</span>
+                                    13.14 €
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <!-- Añadir al carro-->
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="40">  
                                     <input type="hidden" name="precio_venta" value="13.14">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                    <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
         </section>

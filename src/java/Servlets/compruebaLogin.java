@@ -38,12 +38,14 @@ public class compruebaLogin extends HttpServlet {
             if (sizePassw!=0) {
                 String passDB = Dao.Db.consultaUsuario(usuario);
                 String nombreUsuario=Dao.Db.consultaNombreUsuario(usuario);
+                String usuario_tipo=Dao.Db.consultaTipoUsuario(nombreUsuario);
+                
                 HttpSession sesion=request.getSession(); //creo la sesion
                 if(passDB.equals(password) && sesion.getAttribute("usuario")==null){              
                                    
                         sesion.setAttribute("nombreUsuario", nombreUsuario);
-                        sesion.setMaxInactiveInterval(90);
-                        rd=contexto.getRequestDispatcher("/categorias.jsp");
+                        sesion.setAttribute("usuario_tipo", usuario_tipo);
+                        rd=contexto.getRequestDispatcher("/indexRopa.jsp");
                         rd.forward(request, response);
                  
                 } else {

@@ -22,54 +22,64 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="assets/css/styles.css" rel="stylesheet" />
     </head>
-    <%
+     <%
             HttpSession sesion=request.getSession();
             String nombreUsuario=(String) sesion.getAttribute("nombreUsuario");
             if (sesion.getAttribute("nombreUsuario")==null) {
                    //lo envio al index
                    response.sendRedirect("index.html");
-                } 
-            ArrayList<Producto> listaRopa;
-            listaRopa = (ArrayList<Producto>) sesion.getAttribute("listaRopa");
-            ArrayList<Producto> listaInsignias;
-            listaInsignias = (ArrayList<Producto>) sesion.getAttribute("listaInsignias");
-            ArrayList<Producto> listaComplementos;
-            listaComplementos = (ArrayList<Producto>) sesion.getAttribute("listaComplementos");
-            ArrayList<Producto> listaAcampada;
-            listaAcampada = (ArrayList<Producto>) sesion.getAttribute("listaAcampada");
-            ArrayList<Producto> listaLibros;
-            listaLibros = (ArrayList<Producto>) sesion.getAttribute("listaLibros");
-            
+                }
+            String usuario_tipo=(String) sesion.getAttribute("usuario_tipo"); 
+            ArrayList<Producto> listaCompra;
+            listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
+  
             //comprobar si las listas tienen articulos
             int productosCarro=0;
-            if (listaRopa!=null) {
-                productosCarro+=listaRopa.size();
-            } 
-            if (listaInsignias!=null) {
-                productosCarro+=listaInsignias.size();
-            }
-            if (listaComplementos!=null) {
-                productosCarro+=listaComplementos.size();
-            }
-            if (listaAcampada!=null) {
-                productosCarro+=listaAcampada.size();
-            }
-            if (listaLibros!=null) {
-                productosCarro+=listaLibros.size();
+            if (listaCompra!=null) {
+                productosCarro+=listaCompra.size();
             }
             %>
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand">Tienda Scout</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid">
+                <a class="navbar-brand">Tienda Scout <%=nombreUsuario%></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page"><%=nombreUsuario %></a></li>
-                        <form class="d-flex" action="categorias.jsp" method="POST">
-                            <li class="nav-item"><a class="nav-link active" aria-current="page"><button class="btn btn-outline-dark" type="submit">Categorias</button></a></li>   
-                        </form>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page">Inicio</a>                           
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorias
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a <input class="dropdown-item" type="button" value="Ropa" onclick="location.href = 'indexRopa.jsp'">Ropa</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="Insignias" onclick="location.href = 'indexInsignias.jsp'">Insignias</a></li> 
+                                <li><a <input class="dropdown-item" type="button" value="Complementos" onclick="location.href = 'indexComplementos.jsp'">Complementos</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="Acampada" onclick="location.href = 'indexAcampada.jsp'">Acampada</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="Libros" onclick="location.href = 'indexLibros.jsp'">Libros</a></li>
+                            </ul>
+                        </li>  
+                        <!-- Menu para administrador -->
+                        <% if (usuario_tipo.equals("admin")) {
+                          %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Informacion pedidos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'listadoFechas.jsp'">Filtrado por fechas</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'listadoProducto.jsp'">Filtrado por productos</a></li> 
+                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'listadoCliente.jsp'">Filtrado por cliente</a></li>                           
+                            </ul>
+                        </li>
+                        <%
+                                }
+                        %>
                     </ul>
                     <form class="d-flex" action="resumenCompra.jsp" method="POST">
                         <button class="btn btn-outline-dark" type="submit">
@@ -82,7 +92,7 @@
             </div>
         </nav>
         <!-- Header-->
-        <header class="bg-dark py-5">
+        <header class="bg-dark py-3">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">INSIGNIAS</h1>
@@ -113,21 +123,10 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="11"> 
                                     <input type="hidden" name="precio_venta" value="0.72">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                             </div>
                         </div>
@@ -152,21 +151,10 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="12"> 
                                     <input type="hidden" name="precio_venta" value="2.07">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                             </div>
                         </div>
@@ -191,21 +179,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="13">  
                                     <input type="hidden" name="precio_venta" value="3.15">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -230,21 +207,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="14">  
                                     <input type="hidden" name="precio_venta" value="1.62">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -269,21 +235,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="15">
                                     <input type="hidden" name="precio_venta" value="0.63">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -308,21 +263,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="16"> 
                                     <input type="hidden" name="precio_venta" value="0.86">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -347,21 +291,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="17">  
                                     <input type="hidden" name="precio_venta" value="1.80">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -386,21 +319,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="18">  
                                     <input type="hidden" name="precio_venta" value="1.80">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -425,21 +347,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="19"> 
                                     <input type="hidden" name="precio_venta" value="0.63">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>
@@ -464,21 +375,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <!-- Añadir al carro-->
-                                <form action="ServletAgregarCarroInsignias" method="POST">
+                                <form action="detalleProducto.jsp" method="POST">
                                     <input type="hidden" name="producto_id" value="20"> 
                                     <input type="hidden" name="precio_venta" value="0.41">
-                                    <div class="text-center">
-                                        <label>Cantidad</label>
-                                    <select name="cantidad">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    </div>
-                                    <div class="mb-3"></div>
-                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Añadir a carrito"></div>
+                                <div class="text-center"><input type="submit" class="btn btn-outline-dark mt-auto" value="Ver detalle"></div>
                                 </form>
                         </div>
                     </div>

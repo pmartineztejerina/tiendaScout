@@ -35,23 +35,16 @@ public class ServletModificarCantidad extends HttpServlet {
             response.sendRedirect("index.html");
         }
                 
-        ArrayList<Producto> listaRopa;
-        listaRopa = (ArrayList<Producto>) sesion.getAttribute("listaRopa");
-        ArrayList<Producto> listaInsignias;
-        listaInsignias = (ArrayList<Producto>) sesion.getAttribute("listaInsignias");
-        ArrayList<Producto> listaComplementos;
-        listaComplementos = (ArrayList<Producto>) sesion.getAttribute("listaComplementos");
-        ArrayList<Producto> listaAcampada;
-        listaAcampada = (ArrayList<Producto>) sesion.getAttribute("listaAcampada");
-        ArrayList<Producto> listaLibros;
-        listaLibros = (ArrayList<Producto>) sesion.getAttribute("listaLibros");
+        ArrayList<Producto> listaCompra;
+        listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
+        
         
         int producto_id=Integer.parseInt(request.getParameter("producto_id"));
         int cantidad=Integer.parseInt(request.getParameter("cantidad"));
             //miro si el producto esta ya en la lista, recorriendola
             
-            if (listaRopa!=null) {
-            for (Producto lista : listaRopa) {                
+            if (listaCompra!=null) {
+            for (Producto lista : listaCompra) {                
                 if (lista.getProducto_id()==producto_id) {                   
                     //y lo modifico en la lista
                     lista.setCantidad(cantidad);
@@ -59,52 +52,8 @@ public class ServletModificarCantidad extends HttpServlet {
                 } 
             }
             }
-            
-            if (listaInsignias!=null) {
-            for (Producto lista : listaInsignias) {                
-                if (lista.getProducto_id()==producto_id) {                    
-                    //y lo modifico en la lista
-                    lista.setCantidad(cantidad);
-                    break;
-                } 
-            }
-            }
-            
-            if (listaComplementos!=null) {
-            for (Producto lista : listaComplementos) {                
-                if (lista.getProducto_id()==producto_id) {
-                    //y lo modifico en la lista
-                    lista.setCantidad(cantidad);
-                    break;
-                } 
-            }
-            }
-            
-            if (listaAcampada!=null) {
-            for (Producto lista : listaAcampada) {                
-                if (lista.getProducto_id()==producto_id) {
-                    //y lo modifico en la lista
-                    lista.setCantidad(cantidad);
-                    break;
-                } 
-            }
-            }
-            
-            if (listaLibros!=null) {
-            for (Producto lista : listaLibros) {                
-                if (lista.getProducto_id()==producto_id) {
-                    //y lo modifico en la lista
-                    lista.setCantidad(cantidad);
-                    break;
-                } 
-            }
-            }
-            
-            sesion.setAttribute("listaRopa", listaRopa);
-            sesion.setAttribute("listaInsignias", listaInsignias);
-            sesion.setAttribute("listaComplementos", listaComplementos);
-            sesion.setAttribute("listaAcampada", listaAcampada);
-            sesion.setAttribute("listaLibros", listaLibros);
+                 
+            sesion.setAttribute("listaCompra", listaCompra);
             request.getRequestDispatcher("/resumenCompra.jsp").forward(request, response);
     }
 }

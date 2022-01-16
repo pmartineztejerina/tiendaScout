@@ -23,6 +23,12 @@ public class Pedido {
         this.pedido_total = pedido_total;
     }
 
+    public Pedido(int usuario_id, double pedido_total) {
+        this.usuario_id = usuario_id;
+        this.pedido_total = pedido_total;
+    }
+    
+
     public int getPedido_id() {
         return pedido_id;
     }

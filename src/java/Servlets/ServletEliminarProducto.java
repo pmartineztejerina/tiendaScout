@@ -34,23 +34,23 @@ public class ServletEliminarProducto extends HttpServlet {
             //lo envio al index
             response.sendRedirect("index.html");
         }
-                
-        ArrayList<Producto> listaRopa;
-        listaRopa = (ArrayList<Producto>) sesion.getAttribute("listaRopa");
-        ArrayList<Producto> listaInsignias;
-        listaInsignias = (ArrayList<Producto>) sesion.getAttribute("listaInsignias");
-        ArrayList<Producto> listaComplementos;
-        listaComplementos = (ArrayList<Producto>) sesion.getAttribute("listaComplementos");
-        ArrayList<Producto> listaAcampada;
-        listaAcampada = (ArrayList<Producto>) sesion.getAttribute("listaAcampada");
-        ArrayList<Producto> listaLibros;
-        listaLibros = (ArrayList<Producto>) sesion.getAttribute("listaLibros");
+
+        ArrayList<Producto> listaCompra;
+        listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
+
+        int producto_id = Integer.parseInt(request.getParameter("producto_id"));
+
+        if (listaCompra != null) {
+            for (Producto lista : listaCompra) {
+                if (lista.getProducto_id() == producto_id) {
+                    Producto producto = Dao.Db.encuentraProducto(producto_id);
+                    listaCompra.remove(producto);
+                    break;
+                }
+            }
+        }
         
-        int producto_id=Integer.parseInt(request.getParameter("producto_id"));
-        
-        Producto producto = Dao.Db.encuentraProducto(producto_id);
-        
-        listaRopa.remove(producto);
-        
+        sesion.setAttribute("listaCompra", listaCompra);
+        request.getRequestDispatcher("/resumenCompra.jsp").forward(request, response);
     }
 }

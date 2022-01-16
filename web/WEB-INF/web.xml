@@ -9,34 +9,6 @@
         <servlet-class>Servlets.ServletAlta</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletCategoria</servlet-name>
-        <servlet-class>Servlets.ServletCategoria</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAgregarCarro</servlet-name>
-        <servlet-class>Servlets.ServletAgregarCarro</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAgregarCarroRopa</servlet-name>
-        <servlet-class>Servlets.ServletAgregarCarroRopa</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAgregarCarroInsignias</servlet-name>
-        <servlet-class>Servlets.ServletAgregarCarroInsignias</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAgregarCarroComplementos</servlet-name>
-        <servlet-class>Servlets.ServletAgregarCarroComplementos</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAgregarCarroAcampada</servlet-name>
-        <servlet-class>Servlets.ServletAgregarCarroAcampada</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAgregarCarroLibros</servlet-name>
-        <servlet-class>Servlets.ServletAgregarCarroLibros</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletConfirmacionCompra</servlet-name>
         <servlet-class>Servlets.ServletConfirmacionCompra</servlet-class>
     </servlet>
@@ -48,6 +20,10 @@
         <servlet-name>ServletEliminarProducto</servlet-name>
         <servlet-class>Servlets.ServletEliminarProducto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAgregarACarro</servlet-name>
+        <servlet-class>Servlets.ServletAgregarACarro</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>compruebaLogin</servlet-name>
         <url-pattern>/compruebaLogin</url-pattern>
@@ -55,34 +31,6 @@
     <servlet-mapping>
         <servlet-name>ServletAlta</servlet-name>
         <url-pattern>/ServletAlta</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletCategoria</servlet-name>
-        <url-pattern>/ServletCategoria</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAgregarCarro</servlet-name>
-        <url-pattern>/ServletAgregarCarro</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAgregarCarroRopa</servlet-name>
-        <url-pattern>/ServletAgregarCarroRopa</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAgregarCarroInsignias</servlet-name>
-        <url-pattern>/ServletAgregarCarroInsignias</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAgregarCarroComplementos</servlet-name>
-        <url-pattern>/ServletAgregarCarroComplementos</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAgregarCarroAcampada</servlet-name>
-        <url-pattern>/ServletAgregarCarroAcampada</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAgregarCarroLibros</servlet-name>
-        <url-pattern>/ServletAgregarCarroLibros</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletConfirmacionCompra</servlet-name>
@@ -95,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>ServletEliminarProducto</servlet-name>
         <url-pattern>/ServletEliminarProducto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAgregarACarro</servlet-name>
+        <url-pattern>/ServletAgregarACarro</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

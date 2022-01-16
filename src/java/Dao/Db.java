@@ -4,6 +4,7 @@
  */
 package Dao;
 
+import Modelo.Pedido;
 import Modelo.Producto;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -79,6 +80,28 @@ public class Db {
             System.out.println("Controlador JDBC no encontrado" + ex.toString());
         }
         return usuarioNombre;
+    }
+    
+    public static String consultaTipoUsuario(String nombreUsuario) {
+        
+        Connection cnn = null;
+        String usuarioTipo = "";
+        String sql = "SELECT usuario_tipo FROM usuario WHERE usuario_nombre='" + nombreUsuario + "'";
+        try {
+            cnn = CrearConexion();
+            PreparedStatement pst = cnn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                usuarioTipo = rs.getString(1);
+            } 
+            if (cnn != null) {
+                cnn.close();
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Controlador JDBC no encontrado" + ex.toString());
+        }
+        return usuarioTipo;
     }
     
     public static void nuevoUsuario(String nombre, String apellidos, String email, String password, String direccion, String telefono) {
@@ -168,6 +191,109 @@ public static Producto encuentraProducto(int producto_id) {
         
         return producto;
     }
+
+    public static int consultaIdUsuario(String nombreUsuario) {
+        
+        int usuario_id=0;
+        Connection cnn = null;
+        String usuarioNombre = "";
+        String sql = "SELECT usuario_id FROM usuario WHERE usuario_nombre='" + nombreUsuario + "'";
+        try {
+            cnn = CrearConexion();
+            PreparedStatement pst = cnn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                usuario_id=rs.getInt(1);
+            } 
+            if (cnn != null) {
+                cnn.close();
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Controlador JDBC no encontrado" + ex.toString());
+        }
+        return usuario_id;
+    }
+
+    public static void altaPedido(int usuario_id, double pedido_total) {
+              
+        Connection cnn=null;
+        
+        String sql="INSERT INTO pedido (usuario_id, pedido_total) VALUES (?,?)";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            
+            pst.setInt(1, usuario_id);
+            pst.setDouble(2, pedido_total);
+            
+            pst.executeUpdate();
+            pst=null;
+            
+            
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+    
+    }
+
+    public static int numeroPedido() {
+        
+        int pedido_id=0;
+        
+        Connection cnn=null;
+        String sql="SELECT MAX(pedido_id) FROM pedido";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst=cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            if(rs.next()){
+                pedido_id=rs.getInt(1);  
+            }
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+        return pedido_id;
+    }
+
+    public static void altaDetallePedido(Producto producto, int pedido_id) {
+        
+        Connection cnn=null;
+        String sql="INSERT INTO detallepedido (pedido_id, producto_id, detalle_cantidad) VALUES (?,?,?)";
+        int producto_id=producto.getProducto_id();
+        int detalle_cantidad=producto.getCantidad();
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            
+            pst.setInt(1, pedido_id);
+            pst.setInt(2, producto_id);
+            pst.setInt(3, detalle_cantidad);
+            
+            pst.executeUpdate();
+            pst=null;
+            
+            
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+        
+    }
+
+    
     
     
 }

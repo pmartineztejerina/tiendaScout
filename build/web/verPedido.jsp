@@ -93,52 +93,39 @@
                 <thead>
                     <tr>
                         <th scope="col" style="text-align: center">PEDIDO</th>
-                        <th scope="col" style="text-align: center">PRODUCTO</th>
-                        <th scope="col" style="text-align: center">CANTIDAD</th>
-                        <th scope="col" style="text-align: center">PRECIO</th>
-                        <th scope="col" style="text-align: center">DESCUENTO</th>
-                        <th scope="col" style="text-align: center">PRECIO VENTA</th>
+                        <th scope="col" style="text-align: center">PEDIDO FECHA</th>
+                        <th scope="col" style="text-align: center">USUARIO</th>
+                        <th scope="col" style="text-align: center">TOTAL PEDIDO</th>
                     </tr>
                 </thead>
                 <tbody> 
-                <form action="listadoCliente.jsp" method="POST">
+                <form action="listadoProductos.jsp" method="POST">
                     <%
                         ServletContext contexto = getServletContext();
                         RequestDispatcher rd;
   
                         int pedido_id = Integer.parseInt(request.getParameter("pedido_id"));
 
-                        ArrayList<Pedido> listaDetallePedido = Dao.Db.listaDetallePedido(pedido_id);
+                        ArrayList<Pedido> listaPedido = Dao.Db.listaPedido(pedido_id);
                         
                         int producto_id=Integer.parseInt(request.getParameter("producto"));
                         
-                        for (Pedido lista : listaDetallePedido) {
+                        for (Pedido lista : listaPedido) {
+                        double pedido_total=lista.getPedido_total();
                     %>
                     <tr>
                         <td style="text-align: center">
-                            <%=lista.getPedido_id()%>                                                  
+                            <%=lista.getPedido_id() %>                                                  
                         </td>                                                                      
-                        <td style="text-align: center">
-                            <%                                
-                                Producto producto = Dao.Db.encuentraProducto(producto_id);
-                                double producto_precio = producto.getProducto_precio();
-                                double producto_descuento = producto.getProducto_descuento();
-                                double precio_venta = producto_precio - (producto_precio * producto_descuento);
-                            %>
-                            <%=producto.getProducto_nombre()%>                                                   
+                        <td style="text-align: center">                          
+                            <%=lista.getPedido_fecha() %>                                                   
                         </td>
                         <td style="text-align: center">
-                            <%=lista.getDetalle_cantidad()%>                                                  
+                            <%=lista.getUsuario_id() %>                                                  
                         </td>
                         <td style="text-align: center">
-                            <%=producto_precio%> €                                                  
-                        </td>
-                        <td style="text-align: center">
-                            <%=Math.round(producto_descuento * 100)%> %                                                  
-                        </td>
-                        <td style="text-align: center">
-                            <%=Math.round(precio_venta * 100.0) / 100.0%> €                                                 
-                        </td>
+                            <%=Math.round(pedido_total * 100.0) / 100.0%> €                                                  
+                        </td>                       
                     </tr>
                     <% }
                     %>

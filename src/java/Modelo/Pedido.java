@@ -49,7 +49,7 @@ public class Pedido implements Comparable<Pedido> {
         this.detalle_cantidad = detalle_cantidad;
         this.usuario_id = usuario_id;
     }
-
+  
     public int getPedido_id() {
         return pedido_id;
     }

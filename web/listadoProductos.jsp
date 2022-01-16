@@ -120,10 +120,10 @@
                             <%=lista.getDetalle_cantidad() %>                                                  
                         </td> 
                         <td style="text-align: center">
-                            <%=lista.getPedido_fecha() %> €                                                  
+                            <%=lista.getPedido_fecha() %>                                                   
                         </td>
                         <td style="text-align: center">
-                            <%=lista.getUsuario_id() %> €                                                  
+                            <%=lista.getUsuario_id() %>                                                   
                         </td>
                         <td style="text-align: center">
                             <form action="verPedido.jsp" method="POST">

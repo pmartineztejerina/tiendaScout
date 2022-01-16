@@ -448,7 +448,6 @@ public static Producto encuentraProducto(int producto_id) {
                 
                 String pedido_fecha=String.format("%1$td-%1$tm-%1$tY", fecha);
                 
-                //corregir la clase para poder añadir todos los datos
                 pedido=new Pedido(pedido_id, pedido_fecha, detalle_cantidad, usuario_id);
                 listaPedidosProducto.add(pedido);
                 
@@ -466,5 +465,39 @@ public static Producto encuentraProducto(int producto_id) {
         return listaPedidosProducto;
     }
             
+    public static ArrayList<Pedido> listaPedido(int pedido_id) {
+        
+        ArrayList<Pedido> listaPedido=new ArrayList<Pedido>();
+        Pedido pedido;
+        Connection cnn=null;
+        String sql="SELECT pedido_fecha, usuario_id, pedido_total FROM pedido WHERE pedido_id='"+pedido_id+"'";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
             
+            while(rs.next()){
+                Date fecha=rs.getDate(1);       
+                int usuario_id=rs.getInt(2); 
+                double pedido_total=rs.getDouble(3);
+                
+                String pedido_fecha=String.format("%1$td-%1$tm-%1$tY", fecha);
+                             
+                pedido=new Pedido(pedido_id, pedido_fecha, usuario_id, pedido_total);
+                listaPedido.add(pedido);
+                
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+    
+        return listaPedido;
+    }        
 }

@@ -1,11 +1,12 @@
 <%-- 
-    Document   : resumenCompra
-    Created on : 2 ene. 2022, 15:11:12
+    Document   : verPedido
+    Created on : 16 ene. 2022, 23:39:29
     Author     : watanga
 --%>
 
-<%@page import="java.util.ArrayList"%>
 <%@page import="Modelo.Producto"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="Modelo.Pedido"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,18 +15,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>TIENDA SCOUT CARRITO</title>
+        <title>TIENDA SCOUT LISTADO CLIENTES</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="assets/css/styles.css" rel="stylesheet" />
+
     </head>
     <%
         HttpSession sesion = request.getSession();
         String nombreUsuario = (String) sesion.getAttribute("nombreUsuario");
-        String usuario_tipo=(String) sesion.getAttribute("usuario_tipo"); 
+        String usuario_tipo = (String) sesion.getAttribute("usuario_tipo");
         if (sesion.getAttribute("nombreUsuario") == null) {
             //lo envio al index
             response.sendRedirect("index.html");
@@ -58,7 +60,7 @@
                         </li> 
                         <!-- Menu para administrador -->
                         <% if (usuario_tipo.equals("admin")) {
-                          %>
+                        %>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Informacion pedidos
@@ -70,7 +72,7 @@
                             </ul>
                         </li>
                         <%
-                                }
+                            }
                         %>
                     </ul>
                 </div>
@@ -80,7 +82,7 @@
         <header class="bg-dark py-3">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">RESUMEN COMPRA</h1>
+                    <h1 class="display-4 fw-bolder">LISTADO POR PRODUCTO</h1>
                 </div>
             </div>
         </header>
@@ -90,79 +92,61 @@
             <table class="table table-borderless table-primary table-responsive">
                 <thead>
                     <tr>
-                        <th scope="col">PRODUCTO</th>
+                        <th scope="col" style="text-align: center">PEDIDO</th>
+                        <th scope="col" style="text-align: center">PRODUCTO</th>
                         <th scope="col" style="text-align: center">CANTIDAD</th>
                         <th scope="col" style="text-align: center">PRECIO</th>
                         <th scope="col" style="text-align: center">DESCUENTO</th>
                         <th scope="col" style="text-align: center">PRECIO VENTA</th>
-                        <th scope="col" style="text-align: center">SUBTOTAL</th>
-                        <th></th>
                     </tr>
                 </thead>
-                <tbody>                               
+                <tbody> 
+                <form action="listadoCliente.jsp" method="POST">
                     <%
-                        ArrayList<Producto> listaCompra;
-                        listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
+                        ServletContext contexto = getServletContext();
+                        RequestDispatcher rd;
+  
+                        int pedido_id = Integer.parseInt(request.getParameter("pedido_id"));
 
-                        double total = 0;
-
-                        if (listaCompra != null) {
-                            for (Producto lista : listaCompra) {
+                        ArrayList<Pedido> listaDetallePedido = Dao.Db.listaDetallePedido(pedido_id);
+                        
+                        int producto_id=Integer.parseInt(request.getParameter("producto"));
+                        
+                        for (Pedido lista : listaDetallePedido) {
                     %>
                     <tr>
-                        <td>
-                            <%=lista.getProducto_nombre()%>                                                  
-                        </td>                                               
-                        <td style="text-align: center"> 
-                            <form action="ServletModificarCantidad" method="POST">
-                                <input type="number" name="cantidad" value="<%=lista.getCantidad()%>" min="1"> 
-                                <input type="hidden" name="producto_id" value="<%=lista.getProducto_id()%>">
-                                <input type="submit" value="MODIFICAR">
-                            </form>
-                        </td> 
-                        <td style="text-align: center" size="2">
-                            <%=lista.getProducto_precio()%> €                                                  
+                        <td style="text-align: center">
+                            <%=lista.getPedido_id()%>                                                  
+                        </td>                                                                      
+                        <td style="text-align: center">
+                            <%                                
+                                Producto producto = Dao.Db.encuentraProducto(producto_id);
+                                double producto_precio = producto.getProducto_precio();
+                                double producto_descuento = producto.getProducto_descuento();
+                                double precio_venta = producto_precio - (producto_precio * producto_descuento);
+                            %>
+                            <%=producto.getProducto_nombre()%>                                                   
                         </td>
                         <td style="text-align: center">
-                            <%=Math.round(lista.getProducto_descuento() * 100)%> %                                                 
+                            <%=lista.getDetalle_cantidad()%>                                                  
                         </td>
                         <td style="text-align: center">
-                            <%=lista.getPrecio_venta()%> €                                                  
+                            <%=producto_precio%> €                                                  
                         </td>
                         <td style="text-align: center">
-                            <%=Math.round((lista.getPrecio_venta() * lista.getCantidad()) * 100.0) / 100.0%> €                                                  
-                        </td>  
-                        <td style="text-align: center"> 
-                            <form action="ServletEliminarProducto" method="POST">                                                       
-                                <input type="hidden" name="producto_id" value="<%=lista.getProducto_id()%>">
-                                <input type="submit" value="ELIMINAR">
-                            </form>
-                        </td> 
-
-                        <%
-                                total += lista.getPrecio_venta() * lista.getCantidad();
-                            }
-                        %>
+                            <%=Math.round(producto_descuento * 100)%> %                                                  
+                        </td>
+                        <td style="text-align: center">
+                            <%=Math.round(precio_venta * 100.0) / 100.0%> €                                                 
+                        </td>
                     </tr>
-                    <%
-                        }
-
-                        sesion.setAttribute("total", total);
+                    <% }
                     %>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <th>TOTAL</th>
-                        <th style="text-align: center"><%=Math.round(total * 100.0) / 100.0%></th>                                                       
-                    </tr>
-                </tbody>
+
+                    </tbody>
             </table> 
-            <form action="ServletConfirmacionCompra" method="POST">
-                <div class="mb-3"><input type="submit" class="btn btn-primary d-block w-100" value="Confirmar compra"></div>
-                <div class="mb-3"><input type="button" class="btn btn-primary d-block w-100" onclick="location.href = 'indexRopa.jsp'" value="Seguir comprando"></div>
+                    <input type="hidden" name="producto" value="<%=producto_id %>">
+                <input type="submit" class="btn btn-primary" value="Volver">
             </form>
         </section>
 
@@ -180,4 +164,3 @@
     <script src="assets/js/scripts.js"></script>
 </body>
 </html>
-

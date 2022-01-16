@@ -32,9 +32,21 @@ public class ServletAlta extends HttpServlet {
         String direccion=request.getParameter("direccion");
         String telefono=request.getParameter("telefono");
         
-        Dao.Db.nuevoUsuario(nombre,apellidos,email,password,direccion,telefono);
+        String existeUsuario = Dao.Db.consultaUsuario(email);
+        
+        if (existeUsuario==null) {
+            Dao.Db.nuevoUsuario(nombre,apellidos,email,password,direccion,telefono);
        
-        rd=contexto.getRequestDispatcher("/index.html");
-        rd.forward(request,response);
+            rd=contexto.getRequestDispatcher("/index.html");
+            rd.forward(request,response);
+        
+        } else {
+            String error="El email introducido ya esta dado de alta para un cliente";
+            contexto.setAttribute("error", error);
+            rd=contexto.getRequestDispatcher("/error.jsp");
+            rd.forward(request, response);
+        }
+        
+        
     }  
 }

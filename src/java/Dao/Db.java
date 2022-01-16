@@ -6,7 +6,9 @@ package Dao;
 
 import Modelo.Pedido;
 import Modelo.Producto;
+import Modelo.Usuario;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -108,7 +110,7 @@ public class Db {
         Connection cnn=null;
         
         String tipo="usuario";
-        
+       
         String sql="INSERT INTO usuario(usuario_nombre, usuario_apellidos, usuario_tipo, usuario_email, usuario_password, usuario_direccion, usuario_telefono) VALUES (?,?,?,?,?,?,?)";
         try {
             cnn=CrearConexion();
@@ -280,9 +282,7 @@ public static Producto encuentraProducto(int producto_id) {
             
             pst.executeUpdate();
             pst=null;
-            
-            
-            
+    
             if(cnn != null){
                 cnn.close();
             }
@@ -293,7 +293,178 @@ public static Producto encuentraProducto(int producto_id) {
         
     }
 
+    public static ArrayList<Usuario> listaUsuarios() {
+        ArrayList<Usuario> listaUsuarios=new ArrayList<Usuario>();
+        Usuario usuario;
+        Connection cnn=null;
+        String sql="SELECT usuario_id, usuario_nombre, usuario_apellidos, usuario_email FROM usuario";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            
+            while(rs.next()){
+                int usuario_id=rs.getInt(1);
+                String usuario_nombre=rs.getString(2);
+                String usuario_apellidos=rs.getString(3);
+                String usuario_email=rs.getString(4);
+                
+                usuario=new Usuario(usuario_id, usuario_nombre, usuario_apellidos, usuario_email);
+                listaUsuarios.add(usuario);
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
     
+        return listaUsuarios;
+    }
     
+    public static ArrayList<Pedido> listaPedidosCliente(int usuario_id) {
+        
+        ArrayList<Pedido> listaPedidosCliente=new ArrayList<Pedido>();
+        Pedido pedido;
+        Connection cnn=null;
+        String sql="SELECT pedido_id, pedido_fecha, pedido_total FROM pedido WHERE usuario_id='" + usuario_id + "'";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            
+            while(rs.next()){
+                int pedido_id=rs.getInt(1);
+                Date pedido_fecha=rs.getDate(2);
+                double pedido_total=rs.getDouble(3);
+ 
+                
+                String fecha=String.format("%1$td-%1$tm-%1$tY", pedido_fecha);
+                
+                pedido=new Pedido(pedido_id, fecha, usuario_id, pedido_total);
+                listaPedidosCliente.add(pedido);
+                
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
     
+        return listaPedidosCliente;
+    }
+    
+    public static ArrayList<Pedido> listaDetallePedido(int pedido_id) {
+        
+        ArrayList<Pedido> listaDetallePedido=new ArrayList<Pedido>();
+        Pedido pedido;
+        Connection cnn=null;
+        String sql="SELECT detalle_id, producto_id, detalle_cantidad FROM detallepedido WHERE pedido_id='" + pedido_id + "'";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            
+            while(rs.next()){
+                int detalle_id=rs.getInt(1);
+                int producto_id=rs.getInt(2);
+                int detalle_cantidad=rs.getInt(3);
+
+                
+                pedido=new Pedido(detalle_id, pedido_id, producto_id, detalle_cantidad);
+                listaDetallePedido.add(pedido);              
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+    
+        return listaDetallePedido;
+    }
+        
+    public static ArrayList<Producto> listaProductos() {
+        ArrayList<Producto> listaProductos=new ArrayList<Producto>();
+        Producto producto;
+        Connection cnn=null;
+        String sql="SELECT producto_id, producto_nombre FROM producto";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            
+            while(rs.next()){
+                int producto_id=rs.getInt(1);
+                String producto_nombre=rs.getString(2);
+ 
+                producto=new Producto(producto_id, producto_nombre);
+                listaProductos.add(producto);
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+    
+        return listaProductos;
+    } 
+    
+    public static ArrayList<Pedido> listaPedidosProducto(int producto_id) {
+        
+        ArrayList<Pedido> listaPedidosProducto=new ArrayList<Pedido>();
+        Pedido pedido;
+        Connection cnn=null;
+        String sql="SELECT detallepedido.pedido_id, detallepedido.detalle_cantidad, pedido.pedido_fecha, pedido.usuario_id FROM pedido, detallepedido WHERE detallepedido.producto_id="+producto_id+" AND pedido.pedido_id=detallepedido.pedido_id";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            
+            while(rs.next()){
+                int pedido_id=rs.getInt(1);       
+                int detalle_cantidad=rs.getInt(2);
+                Date fecha=rs.getDate(3);
+                int usuario_id=rs.getInt(4);
+                
+                String pedido_fecha=String.format("%1$td-%1$tm-%1$tY", fecha);
+                
+                //corregir la clase para poder añadir todos los datos
+                pedido=new Pedido(pedido_id, pedido_fecha, detalle_cantidad, usuario_id);
+                listaPedidosProducto.add(pedido);
+                
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+    
+        return listaPedidosProducto;
+    }
+            
+            
 }

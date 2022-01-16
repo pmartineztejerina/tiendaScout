@@ -25,6 +25,7 @@
     <%
         HttpSession sesion = request.getSession();
         String nombreUsuario = (String) sesion.getAttribute("nombreUsuario");
+        String usuario_tipo=(String) sesion.getAttribute("usuario_tipo"); 
         if (sesion.getAttribute("nombreUsuario") == null) {
             //lo envio al index
             response.sendRedirect("index.html");
@@ -54,7 +55,23 @@
                                 <li><a <input class="dropdown-item" type="button" value="Acampada" onclick="location.href = 'indexAcampada.jsp'">Acampada</a></li>
                                 <li><a <input class="dropdown-item" type="button" value="Libros" onclick="location.href = 'indexLibros.jsp'">Libros</a></li>
                             </ul>
-                        </li>                                  
+                        </li> 
+                        <!-- Menu para administrador -->
+                        <% if (usuario_tipo.equals("admin")) {
+                          %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Informacion pedidos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'elegirFechas.jsp'">Filtrado por fechas</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'elegirProducto.jsp'">Filtrado por productos</a></li> 
+                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'elegirCliente.jsp'">Filtrado por cliente</a></li>                           
+                            </ul>
+                        </li>
+                        <%
+                                }
+                        %>
                     </ul>
                 </div>
             </div>

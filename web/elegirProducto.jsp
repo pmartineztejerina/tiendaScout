@@ -1,6 +1,6 @@
 <%-- 
-    Document   : resumenCompra
-    Created on : 2 ene. 2022, 15:11:12
+    Document   : elegirProducto
+    Created on : 16 ene. 2022, 22:39:04
     Author     : watanga
 --%>
 
@@ -14,18 +14,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>TIENDA SCOUT CARRITO</title>
+        <title>TIENDA SCOUT LISTADO PRODUCTOS</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="assets/css/styles.css" rel="stylesheet" />
+<!--        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+        <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+        <link rel="stylesheet" href="assets/css/Header-Blue.css">
+        <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+        <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
     </head>
     <%
         HttpSession sesion = request.getSession();
         String nombreUsuario = (String) sesion.getAttribute("nombreUsuario");
-        String usuario_tipo=(String) sesion.getAttribute("usuario_tipo"); 
+        String usuario_tipo = (String) sesion.getAttribute("usuario_tipo");
         if (sesion.getAttribute("nombreUsuario") == null) {
             //lo envio al index
             response.sendRedirect("index.html");
@@ -58,7 +64,7 @@
                         </li> 
                         <!-- Menu para administrador -->
                         <% if (usuario_tipo.equals("admin")) {
-                          %>
+                        %>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Informacion pedidos
@@ -70,98 +76,27 @@
                             </ul>
                         </li>
                         <%
-                                }
+                            }
                         %>
                     </ul>
                 </div>
             </div>
         </nav>
+        <section class="login-dark">
+            <form action="listadoProductos.jsp" method="POST">
+                <h2 class="visually">ELEGIR PRODUCTO</h2>
+                <select name="producto" style="text-align: center">
+                <%
+                    ArrayList<Producto> listaProductos = Dao.Db.listaProductos();
+                    for (Producto lista : listaProductos) {
 
-        <header class="bg-dark py-3">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">RESUMEN COMPRA</h1>
-                </div>
-            </div>
-        </header>
-        <section class="bg-black">
-
-            <div class="mb-3"></div>
-            <table class="table table-borderless table-primary table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col">PRODUCTO</th>
-                        <th scope="col" style="text-align: center">CANTIDAD</th>
-                        <th scope="col" style="text-align: center">PRECIO</th>
-                        <th scope="col" style="text-align: center">DESCUENTO</th>
-                        <th scope="col" style="text-align: center">PRECIO VENTA</th>
-                        <th scope="col" style="text-align: center">SUBTOTAL</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>                               
-                    <%
-                        ArrayList<Producto> listaCompra;
-                        listaCompra = (ArrayList<Producto>) sesion.getAttribute("listaCompra");
-
-                        double total = 0;
-
-                        if (listaCompra != null) {
-                            for (Producto lista : listaCompra) {
-                    %>
-                    <tr>
-                        <td>
-                            <%=lista.getProducto_nombre()%>                                                  
-                        </td>                                               
-                        <td style="text-align: center"> 
-                            <form action="ServletModificarCantidad" method="POST">
-                                <input type="number" name="cantidad" value="<%=lista.getCantidad()%>" min="1"> 
-                                <input type="hidden" name="producto_id" value="<%=lista.getProducto_id()%>">
-                                <input type="submit" value="MODIFICAR">
-                            </form>
-                        </td> 
-                        <td style="text-align: center" size="2">
-                            <%=lista.getProducto_precio()%> €                                                  
-                        </td>
-                        <td style="text-align: center">
-                            <%=Math.round(lista.getProducto_descuento() * 100)%> %                                                 
-                        </td>
-                        <td style="text-align: center">
-                            <%=lista.getPrecio_venta()%> €                                                  
-                        </td>
-                        <td style="text-align: center">
-                            <%=Math.round((lista.getPrecio_venta() * lista.getCantidad()) * 100.0) / 100.0%> €                                                  
-                        </td>  
-                        <td style="text-align: center"> 
-                            <form action="ServletEliminarProducto" method="POST">                                                       
-                                <input type="hidden" name="producto_id" value="<%=lista.getProducto_id()%>">
-                                <input type="submit" value="ELIMINAR">
-                            </form>
-                        </td> 
-
-                        <%
-                                total += lista.getPrecio_venta() * lista.getCantidad();
-                            }
-                        %>
-                    </tr>
-                    <%
+                    %>  
+                    <option value="<%=lista.getProducto_id() %>" required><%=lista.getProducto_nombre() %> </option>                   
+                    <%                        
                         }
-
-                        sesion.setAttribute("total", total);
-                    %>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <th>TOTAL</th>
-                        <th style="text-align: center"><%=Math.round(total * 100.0) / 100.0%></th>                                                       
-                    </tr>
-                </tbody>
-            </table> 
-            <form action="ServletConfirmacionCompra" method="POST">
-                <div class="mb-3"><input type="submit" class="btn btn-primary d-block w-100" value="Confirmar compra"></div>
+                %>
+                </select>
+                <div class="mb-3"><input type="submit" class="btn btn-primary d-block w-100" value="Confirmar"></div>
                 <div class="mb-3"><input type="button" class="btn btn-primary d-block w-100" onclick="location.href = 'indexRopa.jsp'" value="Seguir comprando"></div>
             </form>
         </section>
@@ -180,4 +115,3 @@
     <script src="assets/js/scripts.js"></script>
 </body>
 </html>
-

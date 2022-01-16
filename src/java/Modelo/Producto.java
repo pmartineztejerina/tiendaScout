@@ -28,8 +28,11 @@ public class Producto {
         this.producto_descuento = producto_descuento;
         this.producto_foto = producto_foto;
     }
-    
-    
+
+    public Producto(int producto_id, String producto_nombre) {
+        this.producto_id = producto_id;
+        this.producto_nombre = producto_nombre;
+    }
 
     public Producto(int producto_id, String producto_nombre, int categoria_id, String producto_detalle, double producto_precio, double producto_descuento, String producto_foto, int cantidad, double precio_venta) {
         this.producto_id = producto_id;

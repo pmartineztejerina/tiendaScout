@@ -73,9 +73,9 @@
                                 Informacion pedidos
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'listadoFechas.jsp'">Filtrado por fechas</a></li>
-                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'listadoProducto.jsp'">Filtrado por productos</a></li> 
-                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'listadoCliente.jsp'">Filtrado por cliente</a></li>                           
+                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'elegirFechas.jsp'">Filtrado por fechas</a></li>
+                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'elegirProducto.jsp'">Filtrado por productos</a></li> 
+                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'elegirCliente.jsp'">Filtrado por cliente</a></li>                           
                             </ul>
                         </li>
                         <%

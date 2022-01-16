@@ -4,6 +4,8 @@
  */
 package Modelo;
 
+import java.util.Objects;
+
 /**
  *
  * @author watanga
@@ -11,21 +13,34 @@ package Modelo;
 public class Usuario {
     int usuario_id;
     String usuario_nombre;
+    String usuario_apellidos;
     String usuario_tipo;
     String usuario_email;
     String usuario_password;
     String usuario_direccion;
     String usuario_telefono;
 
-    public Usuario(int usuario_id, String usuario_nombre, String usuario_tipo, String usuario_email, String usuario_password, String usuario_direccion, String usuario_telefono) {
+    public Usuario(int usuario_id, String usuario_nombre, String usuario_apellidos, String usuario_tipo, String usuario_email, String usuario_password, String usuario_direccion, String usuario_telefono) {
         this.usuario_id = usuario_id;
         this.usuario_nombre = usuario_nombre;
+        this.usuario_apellidos = usuario_apellidos;
         this.usuario_tipo = usuario_tipo;
         this.usuario_email = usuario_email;
         this.usuario_password = usuario_password;
         this.usuario_direccion = usuario_direccion;
         this.usuario_telefono = usuario_telefono;
     }
+
+    public Usuario(int usuario_id, String usuario_nombre, String usuario_apellidos, String usuario_email) {
+        this.usuario_id = usuario_id;
+        this.usuario_nombre = usuario_nombre;
+        this.usuario_apellidos = usuario_apellidos;
+        this.usuario_email = usuario_email;
+    }
+
+
+    
+    
 
     public int getUsuario_id() {
         return usuario_id;
@@ -41,6 +56,14 @@ public class Usuario {
 
     public void setUsuario_nombre(String usuario_nombre) {
         this.usuario_nombre = usuario_nombre;
+    }
+
+    public String getUsuario_apellidos() {
+        return usuario_apellidos;
+    }
+
+    public void setUsuario_apellidos(String usuario_apellidos) {
+        this.usuario_apellidos = usuario_apellidos;
     }
 
     public String getUsuario_tipo() {
@@ -82,5 +105,34 @@ public class Usuario {
     public void setUsuario_telefono(String usuario_telefono) {
         this.usuario_telefono = usuario_telefono;
     }
-        
-}
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.usuario_email);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (this.usuario_id != other.usuario_id) {
+            return false;
+        }
+        if (!Objects.equals(this.usuario_email, other.usuario_email)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+}    

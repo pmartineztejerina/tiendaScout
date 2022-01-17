@@ -499,5 +499,40 @@ public static Producto encuentraProducto(int producto_id) {
         }
     
         return listaPedido;
-    }        
+    }  
+    
+    public static ArrayList<Pedido> listaPedidos(String fecha1, String fecha2) {
+        ArrayList<Pedido> listaPedidos=new ArrayList<Pedido>();
+        Pedido pedido;
+        Connection cnn=null;
+        String sql="SELECT pedido_id, pedido_fecha, usuario_id, pedido_total FROM pedido WHERE pedido_fecha BETWEEN '"+fecha1+"' AND '"+fecha2+"'";
+        try {
+            cnn=CrearConexion();
+            PreparedStatement pst;
+            pst = cnn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            
+            while(rs.next()){
+                int pedido_id=rs.getInt(1);
+                Date fecha=rs.getDate(2);
+                int usuario_id=rs.getInt(3);
+                double pedido_total=rs.getDouble(4);
+                
+                String pedido_fecha=String.format("%1$td-%1$tm-%1$tY", fecha);
+ 
+                pedido=new Pedido(pedido_id,pedido_fecha, usuario_id, pedido_total);
+                listaPedidos.add(pedido);
+            }
+            pst=null;
+            
+            if(cnn != null){
+                cnn.close();
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Controlador JDBC no encontrado"+e.toString());
+        }
+    
+        return listaPedidos;
+    } 
 }

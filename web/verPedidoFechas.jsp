@@ -1,6 +1,6 @@
 <%-- 
-    Document   : listadoFechas
-    Created on : 16 ene. 2022, 14:21:50
+    Document   : verPedidoFechas
+    Created on : 17 ene. 2022, 10:06:10
     Author     : watanga
 --%>
 
@@ -95,20 +95,21 @@
                         <th scope="col" style="text-align: center">PEDIDO FECHA</th>
                         <th scope="col" style="text-align: center">USUARIO</th>
                         <th scope="col" style="text-align: center">TOTAL PEDIDO</th>
-                        <th scope="col" style="text-align: center"></th>
                     </tr>
                 </thead>
                 <tbody> 
+                <form action="listadoFechas.jsp" method="POST">
                     <%
                         ServletContext contexto = getServletContext();
                         RequestDispatcher rd;
   
+                        int pedido_id = Integer.parseInt(request.getParameter("pedido_id"));
                         String fecha1 = request.getParameter("fecha1");
                         String fecha2=request.getParameter("fecha2");
 
-                        ArrayList<Pedido> listaPedidos = Dao.Db.listaPedidos(fecha1,fecha2);
-
-                        for (Pedido lista : listaPedidos) {
+                        ArrayList<Pedido> listaPedido = Dao.Db.listaPedido(pedido_id);
+  
+                        for (Pedido lista : listaPedido) {
                         double pedido_total=lista.getPedido_total();
                     %>
                     <tr>
@@ -123,22 +124,17 @@
                         </td>
                         <td style="text-align: center">
                             <%=Math.round(pedido_total * 100.0) / 100.0%> €                                                  
-                        </td> 
-                        <td style="text-align: center">
-                            <form action="verPedidoFechas.jsp" method="POST">
-                                <input type="hidden" name="pedido_id" value="<%=lista.getPedido_id()%>">
-                                <input type="hidden" name="fecha1" value="<%=fecha1 %>">
-                                <input type="hidden" name="fecha2" value="<%=fecha2 %>">
-                                <input type="submit" value="Detalle pedido" class="btn btn-primary">
-                            </form>
-                        </td>
+                        </td>                       
                     </tr>
                     <% }
                     %>
 
                     </tbody>
             </table> 
-
+                    <input type="hidden" name="fecha1" value="<%=fecha1 %>">
+                    <input type="hidden" name="fecha2" value="<%=fecha2 %>">
+                <input type="submit" class="btn btn-primary" value="Volver">
+            </form>
         </section>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

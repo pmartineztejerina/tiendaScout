@@ -1,6 +1,6 @@
 <%-- 
-    Document   : listadoFechas
-    Created on : 16 ene. 2022, 14:21:50
+    Document   : elegirFechas
+    Created on : 17 ene. 2022, 8:52:59
     Author     : watanga
 --%>
 
@@ -14,14 +14,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>TIENDA SCOUT LISTADO CLIENTES</title>
+        <title>TIENDA SCOUT LISTADO ENTRE FECHAS</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="assets/css/styles.css" rel="stylesheet" />
-
+<!--        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+        <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+        <link rel="stylesheet" href="assets/css/Header-Blue.css">
+        <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+        <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
     </head>
     <%
         HttpSession sesion = request.getSession();
@@ -77,68 +82,15 @@
                 </div>
             </div>
         </nav>
-
-        <header class="bg-dark py-3">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">LISTADO POR PRODUCTO</h1>
-                </div>
-            </div>
-        </header>
-        <section class="bg-black">
-
-            <div class="mb-3"></div>
-            <table class="table table-borderless table-primary table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col" style="text-align: center">PEDIDO</th>
-                        <th scope="col" style="text-align: center">PEDIDO FECHA</th>
-                        <th scope="col" style="text-align: center">USUARIO</th>
-                        <th scope="col" style="text-align: center">TOTAL PEDIDO</th>
-                        <th scope="col" style="text-align: center"></th>
-                    </tr>
-                </thead>
-                <tbody> 
-                    <%
-                        ServletContext contexto = getServletContext();
-                        RequestDispatcher rd;
-  
-                        String fecha1 = request.getParameter("fecha1");
-                        String fecha2=request.getParameter("fecha2");
-
-                        ArrayList<Pedido> listaPedidos = Dao.Db.listaPedidos(fecha1,fecha2);
-
-                        for (Pedido lista : listaPedidos) {
-                        double pedido_total=lista.getPedido_total();
-                    %>
-                    <tr>
-                        <td style="text-align: center">
-                            <%=lista.getPedido_id() %>                                                  
-                        </td>                                                                      
-                        <td style="text-align: center">                          
-                            <%=lista.getPedido_fecha() %>                                                   
-                        </td>
-                        <td style="text-align: center">
-                            <%=lista.getUsuario_id() %>                                                  
-                        </td>
-                        <td style="text-align: center">
-                            <%=Math.round(pedido_total * 100.0) / 100.0%> €                                                  
-                        </td> 
-                        <td style="text-align: center">
-                            <form action="verPedidoFechas.jsp" method="POST">
-                                <input type="hidden" name="pedido_id" value="<%=lista.getPedido_id()%>">
-                                <input type="hidden" name="fecha1" value="<%=fecha1 %>">
-                                <input type="hidden" name="fecha2" value="<%=fecha2 %>">
-                                <input type="submit" value="Detalle pedido" class="btn btn-primary">
-                            </form>
-                        </td>
-                    </tr>
-                    <% }
-                    %>
-
-                    </tbody>
-            </table> 
-
+        <section class="login-dark">
+            <form action="listadoFechas.jsp" method="POST">
+                <h2 class="visually">ELEGIR FECHAS</h2>
+                    <input type="date" name="fecha1" min="2021/01/01" max="2030/12/31">
+                    <div class="mb-2"></div>
+                    <input type="date" name="fecha2" min="2021/01/01" max="2030/12/31">            
+                <div class="mb-3"><input type="submit" class="btn btn-primary d-block w-100" value="Confirmar"></div>
+                <div class="mb-3"><input type="button" class="btn btn-primary d-block w-100" onclick="location.href = 'indexRopa.jsp'" value="Seguir comprando"></div>
+            </form>
         </section>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
         <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
         <link rel="stylesheet" href="assets/css/Header-Blue.css">
-        <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+        <link rel="stylesheet" href="assets/css/Login-Form-Dark - usuario.css">
         <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
     </head>
     <%
@@ -48,7 +48,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page">Inicio</a>                           
+                            <a class="nav-link active" aria-current="page" href="indexRopa.jsp">Inicio</a>                           
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -62,19 +62,23 @@
                         <!-- Menu para administrador -->
                         <% if (usuario_tipo.equals("admin")) {
                         %>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Informacion pedidos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'elegirFechas.jsp'">Filtrado por fechas</a></li>
-                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'elegirProducto.jsp'">Filtrado por productos</a></li> 
-                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'elegirCliente.jsp'">Filtrado por cliente</a></li>                           
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirFechas.jsp">Filtrado por fechas</a>                           
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirProducto.jsp">Filtrado por productos</a>                           
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirCliente.jsp">Filtrado por cliente</a>                           
                         </li>
                         <%
                             }
                         %>
+                        <form class="d-flex" action="salir" method="POST">
+                        <button class="btn btn-outline-dark" type="submit">                          
+                            Salir                            
+                        </button>
+                    </form>
                     </ul>
                 </div>
             </div>
@@ -111,6 +115,9 @@
                         
                         Collections.sort(listaPedidosProducto);
                         for (Pedido lista : listaPedidosProducto) {
+                        int usuario_id=lista.getUsuario_id();
+                        String usuario_nombre=Dao.Db.consultaNombUsuario(usuario_id);
+                        String usuario_apellidos=Dao.Db.consultaApellidos(usuario_id);
                     %>
                     <tr>                                                                                             
                         <td style="text-align: center">
@@ -123,7 +130,7 @@
                             <%=lista.getPedido_fecha() %>                                                   
                         </td>
                         <td style="text-align: center">
-                            <%=lista.getUsuario_id() %>                                                   
+                            <%=usuario_id %> / <%=usuario_nombre %> <%=usuario_apellidos %>                                                  
                         </td>
                         <td style="text-align: center">
                             <form action="verPedido.jsp" method="POST">

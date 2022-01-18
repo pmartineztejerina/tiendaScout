@@ -40,10 +40,10 @@ public class Db {
         return cnn;
     }
     
-    public static String consultaUsuario(String user) {
+    public static String consultaUsuario(String email) {
         Connection cnn = null;
         String passwordUser = "";
-        String sql = "SELECT usuario_password FROM usuario WHERE usuario_email='" + user + "'";
+        String sql = "SELECT usuario_password FROM usuario WHERE usuario_email='" + email + "'";
         try {
             cnn = CrearConexion();
             PreparedStatement pst = cnn.prepareStatement(sql);
@@ -297,7 +297,7 @@ public static Producto encuentraProducto(int producto_id) {
         ArrayList<Usuario> listaUsuarios=new ArrayList<Usuario>();
         Usuario usuario;
         Connection cnn=null;
-        String sql="SELECT usuario_id, usuario_nombre, usuario_apellidos, usuario_email FROM usuario";
+        String sql="SELECT usuario_id, usuario_nombre, usuario_apellidos, usuario_email FROM usuario order by usuario_nombre";
         try {
             cnn=CrearConexion();
             PreparedStatement pst;
@@ -401,7 +401,7 @@ public static Producto encuentraProducto(int producto_id) {
         ArrayList<Producto> listaProductos=new ArrayList<Producto>();
         Producto producto;
         Connection cnn=null;
-        String sql="SELECT producto_id, producto_nombre FROM producto";
+        String sql="SELECT producto_id, producto_nombre FROM producto order by producto_nombre";
         try {
             cnn=CrearConexion();
             PreparedStatement pst;
@@ -535,4 +535,69 @@ public static Producto encuentraProducto(int producto_id) {
     
         return listaPedidos;
     } 
+
+    public static boolean existeUsuario(String email) {
+        Connection cnn = null;
+        boolean existeUsuario=false;
+        String sql = "SELECT usuario_email FROM usuario WHERE usuario_email='" + email + "'";
+        try {
+            cnn = CrearConexion();
+            PreparedStatement pst = cnn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String usuario_email = rs.getString(1);
+                existeUsuario=true;
+            } else {
+                existeUsuario=false;
+            }
+            if (cnn != null) {
+                cnn.close();
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Controlador JDBC no encontrado" + ex.toString());
+        }
+        return existeUsuario;
+    }
+        public static String consultaNombUsuario(int usuario_id) {
+        Connection cnn = null;
+        String usuarioNombre = "";
+        String sql = "SELECT usuario_nombre FROM usuario WHERE usuario_id='" + usuario_id + "'";
+        try {
+            cnn = CrearConexion();
+            PreparedStatement pst = cnn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                usuarioNombre = rs.getString(1);
+            } 
+            if (cnn != null) {
+                cnn.close();
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Controlador JDBC no encontrado" + ex.toString());
+        }
+        return usuarioNombre;
+    }
+        
+        public static String consultaApellidos(int usuario_id) {
+        Connection cnn = null;
+        String usuarioApellidos = "";
+        String sql = "SELECT usuario_apellidos FROM usuario WHERE usuario_id='" + usuario_id + "'";
+        try {
+            cnn = CrearConexion();
+            PreparedStatement pst = cnn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                usuarioApellidos = rs.getString(1);
+            } 
+            if (cnn != null) {
+                cnn.close();
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Controlador JDBC no encontrado" + ex.toString());
+        }
+        return usuarioApellidos;
+    }        
 }

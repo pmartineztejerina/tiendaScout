@@ -24,6 +24,10 @@
         <servlet-name>ServletAgregarACarro</servlet-name>
         <servlet-class>Servlets.ServletAgregarACarro</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>salir</servlet-name>
+        <servlet-class>Servlets.salir</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>compruebaLogin</servlet-name>
         <url-pattern>/compruebaLogin</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>ServletAgregarACarro</servlet-name>
         <url-pattern>/ServletAgregarACarro</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>salir</servlet-name>
+        <url-pattern>/salir</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

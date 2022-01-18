@@ -89,6 +89,11 @@
                             <span class="badge bg-dark text-white ms-1 rounded-pill"><%=productosCarro%></span>
                         </button>
                     </form>
+                        <form class="d-flex" action="salir" method="POST">
+                        <button class="btn btn-outline-dark" type="submit">                          
+                            Salir                            
+                        </button>
+                    </form>
                 </div>
             </div>
         </nav>

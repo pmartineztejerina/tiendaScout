@@ -65,15 +65,14 @@
                         <!-- Menu para administrador -->
                         <% if (usuario_tipo.equals("admin")) {
                         %>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Informacion pedidos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'elegirFechas.jsp'">Filtrado por fechas</a></li>
-                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'elegirProducto.jsp'">Filtrado por productos</a></li> 
-                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'elegirCliente.jsp'">Filtrado por cliente</a></li>                           
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirFechas.jsp">Filtrado por fechas</a>                           
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirProducto.jsp">Filtrado por productos</a>                           
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirCliente.jsp">Filtrado por cliente</a>                           
                         </li>
                         <%
                             }
@@ -84,12 +83,13 @@
         </nav>
         <section class="login-dark">
             <form action="listadoFechas.jsp" method="POST">
-                <h2 class="visually">ELEGIR FECHAS</h2>
+                <h2 class="visually" style="text-align: center">ELEGIR FECHAS</h2>
+                <div class="mb-1" style="text-align: center">
                     <input type="date" name="fecha1" min="2021/01/01" max="2030/12/31">
                     <div class="mb-2"></div>
-                    <input type="date" name="fecha2" min="2021/01/01" max="2030/12/31">            
+                    <input type="date" name="fecha2" min="2021/01/01" max="2030/12/31">   
+                    </div>
                 <div class="mb-3"><input type="submit" class="btn btn-primary d-block w-100" value="Confirmar"></div>
-                <div class="mb-3"><input type="button" class="btn btn-primary d-block w-100" onclick="location.href = 'indexRopa.jsp'" value="Seguir comprando"></div>
             </form>
         </section>
 

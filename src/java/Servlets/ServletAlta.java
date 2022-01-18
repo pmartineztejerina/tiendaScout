@@ -32,9 +32,9 @@ public class ServletAlta extends HttpServlet {
         String direccion=request.getParameter("direccion");
         String telefono=request.getParameter("telefono");
         
-        String existeUsuario = Dao.Db.consultaUsuario(email);
+        boolean existeUsuario = Dao.Db.existeUsuario(email);
         
-        if (existeUsuario==null) {
+        if (!existeUsuario) {
             Dao.Db.nuevoUsuario(nombre,apellidos,email,password,direccion,telefono);
        
             rd=contexto.getRequestDispatcher("/index.html");

@@ -61,19 +61,23 @@
                         <!-- Menu para administrador -->
                         <% if (usuario_tipo.equals("admin")) {
                         %>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Informacion pedidos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'elegirFechas.jsp'">Filtrado por fechas</a></li>
-                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'elegirProducto.jsp'">Filtrado por productos</a></li> 
-                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'elegirCliente.jsp'">Filtrado por cliente</a></li>                           
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirFechas.jsp">Filtrado por fechas</a>                           
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirProducto.jsp">Filtrado por productos</a>                           
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="elegirCliente.jsp">Filtrado por cliente</a>                           
                         </li>
                         <%
                             }
                         %>
+                        <form class="d-flex" action="salir" method="POST">
+                        <button class="btn btn-outline-dark" type="submit">                          
+                            Salir                            
+                        </button>
+                    </form>
                     </ul>
                 </div>
             </div>
@@ -93,9 +97,11 @@
                 <thead>
                     <tr>
                         <th scope="col" style="text-align: center">PEDIDO</th>
-                        <th scope="col" style="text-align: center">PEDIDO FECHA</th>
-                        <th scope="col" style="text-align: center">USUARIO</th>
-                        <th scope="col" style="text-align: center">TOTAL PEDIDO</th>
+                        <th scope="col" style="text-align: center">PRODUCTO</th>
+                        <th scope="col" style="text-align: center">CANTIDAD</th>
+                        <th scope="col" style="text-align: center">PRECIO</th>
+                        <th scope="col" style="text-align: center">DESCUENTO</th>
+                        <th scope="col" style="text-align: center">PRECIO VENTA</th>
                     </tr>
                 </thead>
                 <tbody> 
@@ -106,26 +112,39 @@
   
                         int pedido_id = Integer.parseInt(request.getParameter("pedido_id"));
 
-                        ArrayList<Pedido> listaPedido = Dao.Db.listaPedido(pedido_id);
+                        ArrayList<Pedido> listaDetallePedido = Dao.Db.listaDetallePedido(pedido_id);
                         
                         int producto_id=Integer.parseInt(request.getParameter("producto"));
                         
-                        for (Pedido lista : listaPedido) {
+                        for (Pedido lista : listaDetallePedido) {
                         double pedido_total=lista.getPedido_total();
                     %>
                     <tr>
                         <td style="text-align: center">
-                            <%=lista.getPedido_id() %>                                                  
+                            <%=lista.getPedido_id()%>                                                  
                         </td>                                                                      
-                        <td style="text-align: center">                          
-                            <%=lista.getPedido_fecha() %>                                                   
+                        <td style="text-align: center">
+                            <%
+                                int producto_idL = lista.getProducto_id();
+                                Producto producto = Dao.Db.encuentraProducto(producto_idL);
+                                double producto_precio = producto.getProducto_precio();
+                                double producto_descuento = producto.getProducto_descuento();
+                                double precio_venta = producto_precio - (producto_precio * producto_descuento);
+                            %>
+                            <%=producto.getProducto_nombre()%>                                                   
                         </td>
                         <td style="text-align: center">
-                            <%=lista.getUsuario_id() %>                                                  
+                            <%=lista.getDetalle_cantidad()%>                                                  
                         </td>
                         <td style="text-align: center">
-                            <%=Math.round(pedido_total * 100.0) / 100.0%> €                                                  
-                        </td>                       
+                            <%=producto_precio%> €                                                  
+                        </td>
+                        <td style="text-align: center">
+                            <%=Math.round(producto_descuento * 100)%> %                                                  
+                        </td>
+                        <td style="text-align: center">
+                            <%=Math.round(precio_venta * 100.0) / 100.0%> €                                                 
+                        </td>
                     </tr>
                     <% }
                     %>

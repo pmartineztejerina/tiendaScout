@@ -80,12 +80,17 @@
                         <%
                                 }
                         %>
-                    </ul>
+                    </ul>             
                     <form class="d-flex" action="resumenCompra.jsp" method="POST">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Carrito
                             <span class="badge bg-dark text-white ms-1 rounded-pill"><%=productosCarro%></span>
+                        </button>
+                    </form>
+                    <form class="d-flex" action="salir" method="POST">
+                        <button class="btn btn-outline-dark" type="submit">                          
+                            Salir                            
                         </button>
                     </form>
                 </div>

@@ -56,27 +56,15 @@
                                 <li><a <input class="dropdown-item" type="button" value="Libros" onclick="location.href = 'indexLibros.jsp'">Libros</a></li>
                             </ul>
                         </li> 
-                        <!-- Menu para administrador -->
-                        <% if (usuario_tipo.equals("admin")) {
-                          %>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Informacion pedidos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a <input class="dropdown-item" type="button" value="pedidosFecha" onclick="location.href = 'elegirFechas.jsp'">Filtrado por fechas</a></li>
-                                <li><a <input class="dropdown-item" type="button" value="pedidosProductos" onclick="location.href = 'elegirProducto.jsp'">Filtrado por productos</a></li> 
-                                <li><a <input class="dropdown-item" type="button" value="pedidosClientes" onclick="location.href = 'elegirCliente.jsp'">Filtrado por cliente</a></li>                           
-                            </ul>
-                        </li>
-                        <%
-                                }
-                        %>
+                        <form class="d-flex" action="salir" method="POST">
+                        <button class="btn btn-outline-dark" type="submit">                          
+                            Salir                            
+                        </button>
+                    </form>
                     </ul>
                 </div>
             </div>
         </nav>
-
         <header class="bg-dark py-3">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">

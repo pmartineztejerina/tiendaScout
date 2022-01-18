@@ -102,11 +102,12 @@
             </div>
         </header>
         <section class>
-            <div class="container ">
-                <div class="row  justify-content-center">
+            <div class="container">
+                <div class="row">
+                    <div class="row cards" style="width: auto; margin: auto auto;">
                     <!-- PRIMER PRODUCTO -->
                     <div class="mb-3"></div>
-                    <div class="col justify-content-center">
+                    <div class="col">
                         <div class="card" style="width: 18rem;">
                             <!-- Sale badge-->
                             <%
@@ -160,6 +161,7 @@
 
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </section>

@@ -29,15 +29,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <form action="ServletAlta" method="POST">
             <h2 class="visually">REGISTRO</h2>
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-            <div class="mb-3"><input class="form-control" type="text" name="nombre" placeholder="Nombre" required ></div>
-            <div class="mb-3"><input class="form-control" type="text" name="apellidos" placeholder="Apellidos" required ></div>
-            <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" required ></div>
-            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Contraseña" required></div>
+            <div class="mb-3"><input class="form-control" type="text" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ -]{2,48}$" title="Este texto no puede llevar numeros" required ></div>
+            <div class="mb-3"><input class="form-control" type="text" name="apellidos" placeholder="Apellidos" pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ -]{2,48}$" title="Este texto no puede llevar numeros" required ></div>
+            <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" pattern="[a-zA-Z0-9!#$%'*_+-]([\.]?[a-zA-Z0-9!#$%'*_+-])+@[a-zA-Z0-9]([^@%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?" title="Formato de email no válido" required ></div>
+            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Contraseña" pattern="(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$" required></div>
             <div class="mb-3"><input class="form-control" type="text" name="direccion" placeholder="Direccion" required></div>
-            <div class="mb-3"><input class="form-control" type="tel" name="telefono" placeholder="Telefono"></div>
+            <div class="mb-3"><input class="form-control" type="tel" name="telefono" placeholder="Telefono" pattern="((\+34)?)(\d{9})$" title="Formato de telefono no válido" required></div>
             <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Registrarse</button></div>
         </form>
     </section>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
-</html>
+</html> 

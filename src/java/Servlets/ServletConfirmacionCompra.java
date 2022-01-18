@@ -29,6 +29,8 @@ public class ServletConfirmacionCompra extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession sesion = request.getSession();
+        ServletContext contexto=getServletContext();
+        RequestDispatcher rd;
 
         String nombreUsuario = (String) sesion.getAttribute("nombreUsuario");
         
@@ -51,8 +53,12 @@ public class ServletConfirmacionCompra extends HttpServlet {
             Dao.Db.altaDetallePedido(producto,pedido_id);
         }
         
-        sesion.invalidate();
-        response.sendRedirect("index.html");
+        listaCompra.clear();
+        String mensaje="Muchas gracias por su compra";
+        contexto.setAttribute("mensaje", mensaje);
+        rd=contexto.getRequestDispatcher("/confirmacionCompra.jsp");
+        rd.forward(request, response);
+        
     }
 
 }

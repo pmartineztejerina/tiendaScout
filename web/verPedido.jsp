@@ -101,6 +101,7 @@
                         <th scope="col" style="text-align: center">CANTIDAD</th>
                         <th scope="col" style="text-align: center">PRECIO</th>
                         <th scope="col" style="text-align: center">DESCUENTO</th>
+                        <th scope="col" style="text-align: center">PRECIO DCTO</th>
                         <th scope="col" style="text-align: center">PRECIO VENTA</th>
                     </tr>
                 </thead>
@@ -126,10 +127,12 @@
                         <td style="text-align: center">
                             <%
                                 int producto_idL = lista.getProducto_id();
+                                int cantidad=lista.getDetalle_cantidad();
                                 Producto producto = Dao.Db.encuentraProducto(producto_idL);
                                 double producto_precio = producto.getProducto_precio();
                                 double producto_descuento = producto.getProducto_descuento();
-                                double precio_venta = producto_precio - (producto_precio * producto_descuento);
+                                double precioDcto=producto_precio - (producto_precio * producto_descuento);
+                                double precio_venta = (producto_precio - (producto_precio * producto_descuento))*cantidad;
                             %>
                             <%=producto.getProducto_nombre()%>                                                   
                         </td>
@@ -141,6 +144,9 @@
                         </td>
                         <td style="text-align: center">
                             <%=Math.round(producto_descuento * 100)%> %                                                  
+                        </td>
+                        <td style="text-align: center">
+                            <%=Math.round(precioDcto*100.0)/100.0%> €                                                  
                         </td>
                         <td style="text-align: center">
                             <%=Math.round(precio_venta * 100.0) / 100.0%> €                                                 

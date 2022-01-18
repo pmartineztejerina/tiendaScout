@@ -40,14 +40,15 @@
         </nav>    
         <section class="login-dark">
             <div clas="container">
-
-                <form action="index.html" method="POST">
-                    <%
-                        String error = (String) getServletContext().getAttribute("error");
-                    %>
-                    <h3> <%= error%> </h3>
-                    <input type="submit" value="Volver a intentarlo" class="btn btn-light action-button">
-                </form>
+                <div class="mb-0" style="text-align: center">
+                    <form action="index.html" method="POST">
+                        <%
+                            String error = (String) getServletContext().getAttribute("error");
+                        %>
+                        <h3> <%= error%> </h3>
+                        <input type="submit" value="Volver a intentarlo" class="btn btn-light action-button">
+                    </form>
+                </div>
             </div>
         </section>
 

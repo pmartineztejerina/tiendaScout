@@ -8,11 +8,17 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>TIENDA SCOUT CARRITO</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title>LOG IN</title>
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+        <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+        <link rel="stylesheet" href="assets/css/Header-Blue.css">
+        <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+        <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <title>TIENDA SCOUT CONFIRMACION COMPRA</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -76,14 +82,15 @@
         </nav>
         <section class="login-dark">
             <div clas="container">
-
+                <div class="mb-0" style="text-align: center">
                 <form action="index.html" method="POST">
                     <%
-                        String mensaje = (String) getServletContext().getAttribute("error");
+                        String mensaje = (String) getServletContext().getAttribute("mensaje");
                     %>
                     <h3> <%= mensaje%> </h3>
                     <input type="submit" value="Volver a tienda" class="btn btn-light action-button">
                 </form>
+                    </div>
             </div>
         </section>
 

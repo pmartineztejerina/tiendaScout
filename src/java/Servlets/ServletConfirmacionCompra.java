@@ -56,7 +56,7 @@ public class ServletConfirmacionCompra extends HttpServlet {
         listaCompra.clear();
         String mensaje="Muchas gracias por su compra";
         contexto.setAttribute("mensaje", mensaje);
-        rd=contexto.getRequestDispatcher("/confirmacionCompra.jsp");
+        rd=contexto.getRequestDispatcher("/indexRopa.jsp");
         rd.forward(request, response);
         
     }

@@ -83,7 +83,7 @@
         <section class="login-dark">
             <div clas="container">
                 <div class="mb-0" style="text-align: center">
-                <form action="index.html" method="POST">
+                <form action="indexRopa.jsp" method="POST">
                     <%
                         String mensaje = (String) getServletContext().getAttribute("mensaje");
                     %>
